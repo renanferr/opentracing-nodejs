@@ -1,0 +1,40 @@
+{
+  "name": "apm-opentracing-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./lib/index.js",
+  "types": "./lib/",
+  "scripts": {
+    "test": "mocha --reporter spec",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "docs": "typedoc --out docs src",
+    "gh-pages": "rimraf docs && npm run docs && gh-pages -d docs",
+    "lint": "tslint --project \"./tsconfig.json\""
+  },
+  "keywords": [],
+  "author": "Renan Ferreira",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/renanferr/apm-opentracing-wrap"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.2.0",
+    "@types/elastic-apm-node": "^2.7.0",
+    "@types/express": "^4.17.1",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.7.2",
+    "chai": "^4.2.0",
+    "gh-pages": "^2.1.1",
+    "mocha": "^6.2.0",
+    "tslint": "^5.19.0",
+    "typedoc": "^0.15.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "elastic-apm-node": "^2.16.0",
+    "elastic-apm-node-opentracing": "^1.1.0",
+    "opentracing": "^0.14.4"
+  }
+}
