@@ -1,6 +1,6 @@
 {
-  "name": "apm-opentracing-node",
-  "version": "0.0.1-alpha",
+  "name": "apm-opentracing-ipp",
+  "version": "0.0.2-alpha",
   "description": "",
   "main": "./lib/index.js",
   "types": "./lib/",
@@ -10,16 +10,17 @@
     "build:watch": "tsc --watch",
     "docs": "typedoc --out docs src",
     "gh-pages": "rimraf docs && npm run docs && gh-pages -d docs",
-    "prepublish": "npm run gh-pages && npm run build"
-  },
-  "publishConfig": {
-    "registry": "http://localhost:8081/repository/npm-private"
+    "cover": "istanbul cover node_modules/mocha/bin/_mocha test/*.js - - -R spec",
+    "ci": "npm run build && npm run cover",
+    "postversion": "git push && git push --tags",
+    "prepublishOnly": "npm run ci",
+    "preversion": "npm run ci"
   },
   "keywords": [],
   "author": "Renan Ferreira",
   "repository": {
     "type": "git",
-    "url": "https://github.com/renanferr/apm-opentracing-wrap"
+    "url": "https://github.com/renanferr/apm-opentracing-ipp"
   },
   "license": "ISC",
   "devDependencies": {
@@ -30,7 +31,9 @@
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.7.2",
     "chai": "^4.2.0",
+    "coveralls": "^3.0.6",
     "gh-pages": "^2.1.1",
+    "istanbul": "^0.4.5",
     "mocha": "^6.2.0",
     "tslint": "^5.19.0",
     "typedoc": "^0.15.0",
