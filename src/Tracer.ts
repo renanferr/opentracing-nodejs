@@ -5,20 +5,25 @@ import Span from './Span'
 import { Response, Request, NextFunction } from 'express'
 
 export interface TracerConfig {
-  serviceName: string,
-  serverUrl: string,
+  serviceName: string
+  serverUrl: string
   secretToken: string
 }
 
 export default class Tracer {
 
-  Tags: any;
-  serviceName: string;
-  secretToken: string;
-  serverUrl: string;
-  _agent: any;
-  _tracer: any;
+  Tags: any
 
+  serviceName: string
+
+  secretToken: string
+
+  serverUrl: string
+
+  _agent: any
+
+  _tracer: any
+  
   constructor(config: TracerConfig) {
     this.serviceName = config.serviceName
     this.secretToken = config.secretToken
@@ -47,7 +52,7 @@ export default class Tracer {
       this._throwSpanNameError()
     }
 
-    return function (...args: any[]): any | void {
+    return function (...args: any[]): any {
       console.log({ args })
       console.log("Span created", spanName)
       const span = tracer.startSpan(spanName)

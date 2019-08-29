@@ -1,5 +1,13 @@
 import { Tags } from 'opentracing'
 
+export interface LogPayload {
+    event: string
+    message: string
+    stack: string
+    'error.object': Error
+    'error.kind'?: string
+}
+
 export default class Span {
 
     name: string
@@ -18,26 +26,35 @@ export default class Span {
         if (e instanceof Error) {
             return e
         } else {
-            if (typeof e === 'string') {
-                e = new Error(e)
-            } else if (typeof e === 'object' && !!e.message) {
-                e = new Error(e.message)
-            } else {
-                e = new Error("Error")
+            switch (typeof e) {
+                case 'string':
+                    e = new Error(e)
+                    break
+                case 'object':
+                    e = new Error(e.message || "Error")
+                    break
+                default:
+                    e = new Error("Error")
+                    break
             }
             return e
         }
     }
 
-    log(payload: any): void {
+    log(payload: LogPayload): void {
         this._span.log(payload)
     }
 
     logError(error: any, kind?: string): void {
         error = this._serializeError(error)
         this.setTag(this.Tags.ERROR, true)
-        const payload = { 'event': 'error', 'error.object': error, 'error.kind': kind, 'message': error.message, 'stack': error.stack }
-        this.log(payload)
+        this.log({
+            event:          'error',
+            message:        error.message,
+            stack:          error.stack,
+            'error.object': error,
+            'error.kind':   kind,
+        })
     }
 
     _handleThrownError(error: any): void {

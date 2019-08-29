@@ -12,7 +12,7 @@ describe("Tracer", () => {
         done()
     })
 
-    it("should throw span error for empty string", done => {
+    // it("should throw span error for empty string", done => {
     
-    })
+    // })
 })
