@@ -53,6 +53,14 @@ export default class Tracer {
 
       try {
         fnReturn = fn.call(fn, ...args)
+        if (fnReturn instanceof Promise) {
+          return fnReturn
+            .then(resolved => {
+              span.finish()
+              return resolved
+            })
+            .catch(span._handleThrownError)
+        }
       } catch (e) {
         console.error(e)
         span._handleThrownError(e)
