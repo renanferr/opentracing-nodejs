@@ -1,4 +1,10 @@
-import Tracer, { TracerConfig } from './Tracer'
+import Tracer, { TracerConfig, TracerExceptions, ITracerExceptions } from './Tracer'
 import Span from './Span'
 
-export { Span, TracerConfig, Tracer }
+export {
+    Span,
+    TracerConfig,
+    Tracer,
+    TracerExceptions,
+    ITracerExceptions
+}

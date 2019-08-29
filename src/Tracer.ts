@@ -4,12 +4,6 @@ import OpenTracer from 'elastic-apm-node-opentracing'
 import Span from './Span'
 import { Response, Request, NextFunction } from 'express'
 
-export interface TracerConfig {
-  serviceName: string
-  serverUrl: string
-  secretToken: string
-}
-
 export default class Tracer {
 
   Tags: any
@@ -23,6 +17,8 @@ export default class Tracer {
   _agent: any
 
   _tracer: any
+
+  _exceptions: ITracerExceptions
   
   constructor(config: TracerConfig) {
     this.serviceName = config.serviceName
@@ -32,15 +28,12 @@ export default class Tracer {
     this._agent = apm.start(config)
     this._tracer = new OpenTracer(this._agent)    
     this.Tags = Tags
-  }
-
-  _throwSpanNameError() {
-    throw new Error(`A name for the span was not provided and it could not use it's own function's name. To properly name your span, please provide it as a second argument to the decorate functions. e.g.: tracer.decorate(myFunc, 'my-span-name')`)
+    this._exceptions = TracerExceptions
   }
 
   startSpan(name: string): Span {
     if (!name) {
-      this._throwSpanNameError()
+      throw new Error(this._exceptions.INVALID_SPAN_NAME)
     }
     return new Span(name, this._tracer.startSpan(name))
   }
@@ -49,7 +42,7 @@ export default class Tracer {
     const tracer = this
 
     if (!spanName) {
-      this._throwSpanNameError()
+      throw new Error(this._exceptions.INVALID_SPAN_NAME)
     }
 
     return function (...args: any[]): any {
@@ -74,7 +67,7 @@ export default class Tracer {
 
   decorateExpress(fn: Function, spanName: string = fn.name): Function {
     if (!spanName) {
-      this._throwSpanNameError()
+      throw new Error(this._exceptions.INVALID_SPAN_NAME)
     }
 
     const tracer = this
@@ -112,4 +105,18 @@ export default class Tracer {
     }
 
   }
+}
+
+export const TracerExceptions: ITracerExceptions = {
+  INVALID_SPAN_NAME: `A name for the span was not provided and it could not use it's own function's name. To properly name your span, please provide it as a second argument to the decorate functions. e.g.: tracer.decorate(myFunc, 'my-span-name')`,
+}
+
+export interface ITracerExceptions {
+  INVALID_SPAN_NAME: string
+}
+
+export interface TracerConfig {
+  serviceName: string
+  serverUrl: string
+  secretToken: string
 }
