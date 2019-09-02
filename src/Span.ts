@@ -1,5 +1,5 @@
 import { Tags } from 'opentracing'
-
+import Tracer from './Tracer'
 export interface LogPayload {
     event: string
     message: string
@@ -15,14 +15,27 @@ export default class Span {
     _span: any
     _finished: boolean
 
-    constructor(name: string, openTracingSpan: any) {
+    constructor(name: string, span: any) {
         this.name = name
-        this._span = openTracingSpan
+        this._span = span
         this.Tags = Tags
         this._finished = false
     }
 
-    _serializeError(e: any): Error {
+    // ALIASES
+    addTag = this.setTag.bind(this)
+    addLabel = this.setTag.bind(this)
+    setLabel = this.setTag.bind(this)
+
+    addTags = this.setTags.bind(this)
+    addLabels = this.setTags.bind(this)
+    setLabels = this.setTags.bind(this)
+
+    getLabel = this.getTag.bind(this)
+    getLabels = this.getTags.bind(this)
+
+    
+    _sanitizeError(e: any): Error {
         if (e instanceof Error) {
             return e
         } else {
@@ -46,14 +59,14 @@ export default class Span {
     }
 
     logError(error: any, kind?: string): void {
-        error = this._serializeError(error)
+        error = this._sanitizeError(error)
         this.setTag(this.Tags.ERROR, true)
         this.log({
-            event:          'error',
-            message:        error.message,
-            stack:          error.stack,
+            event: 'error',
+            message: error.message,
+            stack: error.stack,
             'error.object': error,
-            'error.kind':   kind,
+            'error.kind': kind,
         })
     }
 
@@ -69,6 +82,14 @@ export default class Span {
 
     setTags(tags: object): void {
         Object.entries(tags).forEach(([tag, value]) => this.setTag(tag, value))
+    }
+
+    getTag(tag: string) {
+        return this._span._span._labels[tag]
+    }
+
+    getTags() {
+        return this._span._span._labels
     }
 
     context(): any {

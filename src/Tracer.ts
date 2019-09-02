@@ -24,7 +24,7 @@ export default class Tracer {
     this.serviceName = config.serviceName
     this.secretToken = config.secretToken
     this.serverUrl = config.serverUrl
-    console.log("Starting")
+    // console.log("Starting")
     this._agent = apm.start(config)
     this._tracer = new OpenTracer(this._agent)    
     this.Tags = Tags
@@ -46,8 +46,6 @@ export default class Tracer {
     }
 
     return function (...args: any[]): any {
-      console.log({ args })
-      console.log("Span created", spanName)
       const span = tracer.startSpan(spanName)
       let fnReturn
 
@@ -81,7 +79,7 @@ export default class Tracer {
     const tracer = this
 
     return function (req: Request, res: Response, next?: NextFunction): any {
-      console.log("Span created", spanName)
+      // console.log("Span created", spanName)
 
       const span: Span = tracer.startSpan(spanName)
 
@@ -97,7 +95,7 @@ export default class Tracer {
 
       const statusCode: number = res.statusCode
 
-      span.setTags({
+      span.addTags({
         [tracer.Tags.COMPONENT]: 'express',
         [tracer.Tags.HTTP_METHOD]: req.method,
         [tracer.Tags.HTTP_URL]: req.url,

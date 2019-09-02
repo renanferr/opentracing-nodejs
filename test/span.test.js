@@ -13,13 +13,87 @@ describe("Span", () => {
     done()
   })
 
-  it("should serialize error message string to error object", done => {
+  it("should sanitize error message string to error object", done => {
     const str = "Error message"
-    const s = tracer.startSpan('test-tracer')
-    const serialized = s._serializeError(str)
-    expect(serialized).to.be.instanceOf(Error)
-    expect(serialized.message).to.equal(str)
+    const s = tracer.startSpan('test-span')
+    const sanitized = s._sanitizeError(str)
+    expect(sanitized).to.be.instanceOf(Error)
+    expect(sanitized.message).to.equal(str)
     s.finish()
+    done()
+  })
+
+  it("should set provided tag to span with setTag", done => {
+    const tagName = 'tag'
+    const tagValue = 'val'
+    const s = tracer.startSpan('test-span')
+    s.setTag(tagName, tagValue)
+    expect(s._span._span._labels[tagName]).to.equal(tagValue)
+    done()
+  })
+
+
+  it("should set provided tag to span with addTag", done => {
+    const tagName = 'tag'
+    const tagValue = 'val'
+    const s = tracer.startSpan('test-span')
+    s.addTag(tagName, tagValue)
+    expect(s._span._span._labels[tagName]).to.equal(tagValue)
+    done()
+  })
+
+  it("should set provided tag to span with setLabel", done => {
+    const tagName = 'tag'
+    const tagValue = 'val'
+    const s = tracer.startSpan('test-span')
+    s.setLabel(tagName, tagValue)
+    expect(s._span._span._labels[tagName]).to.equal(tagValue)
+    done()
+  })
+
+  it("should set provided tags to span with setTags", done => {
+    const tags = {
+      tag1: '1',
+      tag2: '2'
+    }
+
+    const s = tracer.startSpan('test-span')
+    s.setTags(tags)
+    Object.entries(tags)
+      .forEach(([tag, value]) => {
+        expect(s._span._span._labels[tag]).to.equal(value)
+      })
+    done()
+  })
+
+
+  it("should set provided tags to span with addTags", done => {
+    const tags = {
+      tag1: '1',
+      tag2: '2'
+    }
+
+    const s = tracer.startSpan('test-span')
+    s.addTags(tags)
+    Object.entries(tags)
+      .forEach(([tag, value]) => {
+        expect(s._span._span._labels[tag]).to.equal(value)
+      })
+    done()
+  })
+
+  it("should set provided tags to span with setLabels", done => {
+    const tags = {
+      tag1: '1',
+      tag2: '2'
+    }
+
+    const s = tracer.startSpan('test-span')
+    s.setLabels(tags)
+    Object.entries(tags)
+      .forEach(([tag, value]) => {
+        expect(s._span._span._labels[tag]).to.equal(value)
+      })
     done()
   })
 })

@@ -2,9 +2,9 @@ import Tracer, { TracerConfig, TracerExceptions, ITracerExceptions } from './Tra
 import Span from './Span'
 
 export {
+    Tracer,
     Span,
     TracerConfig,
-    Tracer,
     TracerExceptions,
     ITracerExceptions
 }

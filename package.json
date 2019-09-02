@@ -1,22 +1,30 @@
 {
   "name": "apm-opentracing-ipp",
-  "version": "0.0.2-alpha",
+  "version": "0.0.1-alpha",
   "description": "",
   "main": "./lib/index.js",
   "types": "./lib/",
   "scripts": {
-    "test": "mocha --reporter spec",
+    "test": "node_modules/mocha/bin/_mocha test/*.js - - -R spec",
     "build": "tsc",
+    "build:test": "npm run build && npm run test",
     "build:watch": "tsc --watch",
     "docs": "typedoc --out docs src",
     "gh-pages": "rimraf docs && npm run docs && gh-pages -d docs",
-    "cover": "istanbul cover node_modules/mocha/bin/_mocha test/*.js - - -R spec",
+    "cover": "npm run cover:unit && npm run cover:report",
+    "cover:unit": "nyc --silent npm run test",
+    "cover:report": "nyc report --reporter=lcov --reporter=text",
     "ci": "npm run build && npm run cover",
     "postversion": "git push && git push --tags",
     "prepublishOnly": "npm run ci",
     "preversion": "npm run ci"
   },
-  "keywords": [],
+  "keywords": [
+    "apm",
+    "opentracing",
+    "application monitoring",
+    "elastic-apm"
+  ],
   "author": "Renan Ferreira",
   "repository": {
     "type": "git",
@@ -35,6 +43,7 @@
     "gh-pages": "^2.1.1",
     "istanbul": "^0.4.5",
     "mocha": "^6.2.0",
+    "nyc": "^14.1.1",
     "tslint": "^5.19.0",
     "typedoc": "^0.15.0",
     "typescript": "^3.5.3"
