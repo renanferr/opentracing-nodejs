@@ -1,5 +1,4 @@
 import { Tags } from 'opentracing'
-import Tracer from './Tracer'
 export interface LogPayload {
     event: string
     message: string
@@ -18,7 +17,6 @@ export default class Span {
     constructor(name: string, span: any) {
         this.name = name
         this._span = span
-        this.Tags = Tags
         this._finished = false
     }
 
@@ -60,7 +58,7 @@ export default class Span {
 
     logError(error: any, kind?: string): void {
         error = this._sanitizeError(error)
-        this.setTag(this.Tags.ERROR, true)
+        this.setTag(Tags.ERROR, true)
         this.log({
             event: 'error',
             message: error.message,

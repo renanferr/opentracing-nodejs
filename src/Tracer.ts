@@ -4,9 +4,7 @@ import OpenTracer from 'elastic-apm-node-opentracing'
 import Span from './Span'
 import { Response, Request, NextFunction } from 'express'
 
-export default class Tracer {
-
-  Tags: any
+export class Tracer {
 
   serviceName: string
 
@@ -24,10 +22,8 @@ export default class Tracer {
     this.serviceName = config.serviceName
     this.secretToken = config.secretToken
     this.serverUrl = config.serverUrl
-    // console.log("Starting")
     this._agent = apm.start(config)
     this._tracer = new OpenTracer(this._agent)    
-    this.Tags = Tags
     this._exceptions = TracerExceptions
   }
 
@@ -57,16 +53,16 @@ export default class Tracer {
               span.finish()
               return resolved
             })
-            .catch(span._handleThrownError)
+            .catch(e => {
+              span._handleThrownError(e)
+              return Promise.reject(e)
+            })
         }
       } catch (e) {
-        console.error(e)
         span._handleThrownError(e)
-        return fnReturn
+        throw e
       }
-
       span.finish()
-
       return fnReturn
     }
   }
@@ -79,7 +75,6 @@ export default class Tracer {
     const tracer = this
 
     return function (req: Request, res: Response, next?: NextFunction): any {
-      // console.log("Span created", spanName)
 
       const span: Span = tracer.startSpan(spanName)
 
@@ -87,19 +82,29 @@ export default class Tracer {
 
       try {
         fnReturn = fn.call(fn, req, res, next)
+        if (fnReturn instanceof Promise) {
+          return fnReturn
+            .then(resolved => {
+              span.finish()
+              return resolved
+            })
+            .catch(e => {
+              span._handleThrownError(e)
+              return Promise.reject(e)
+            })
+        }
       } catch (e) {
-        console.error(e)
         span._handleThrownError(e)
-        return res.status(500).send(e.message || e)
+        throw e
       }
 
       const statusCode: number = res.statusCode
 
       span.addTags({
-        [tracer.Tags.COMPONENT]: 'express',
-        [tracer.Tags.HTTP_METHOD]: req.method,
-        [tracer.Tags.HTTP_URL]: req.url,
-        [tracer.Tags.HTTP_STATUS_CODE]: statusCode
+        [Tags.COMPONENT]: 'express',
+        [Tags.HTTP_METHOD]: req.method,
+        [Tags.HTTP_URL]: req.url,
+        [Tags.HTTP_STATUS_CODE]: statusCode
       })
 
       if (statusCode > 399) {

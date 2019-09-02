@@ -1,6 +1,5 @@
 import Span from './Span';
-export default class Tracer {
-    Tags: any;
+export declare class Tracer {
     serviceName: string;
     secretToken: string;
     serverUrl: string;

@@ -96,4 +96,27 @@ describe("Span", () => {
       })
     done()
   })
+
+  it("should return tag value for for getTag", done => {
+    const tag = 'tagName'
+    const val = 'tagValue'
+
+    const s = tracer.startSpan('test-span')
+    s.setTag(tag, val)
+    expect(s.getTag(tag)).to.equal(val)
+    done()
+  })
+
+  it("should return all tags for getTags", done => {
+    const tags = {
+      tag1: '1',
+      tag2: '2'
+    }
+
+    const s = tracer.startSpan('test-span')
+    s.setTags(tags)
+    const retreivedTags = s.getTags()
+    expect(retreivedTags).to.deep.equal(tags)
+    done()
+  })
 })

@@ -1,3 +1,4 @@
-import Tracer, { TracerConfig, TracerExceptions, ITracerExceptions } from './Tracer';
+import { Tracer, TracerConfig, TracerExceptions, ITracerExceptions } from './Tracer';
 import Span from './Span';
-export { Tracer, Span, TracerConfig, TracerExceptions, ITracerExceptions };
+import { Tags } from 'opentracing';
+export { Tracer, Tags, Span, TracerConfig, TracerExceptions, ITracerExceptions };
