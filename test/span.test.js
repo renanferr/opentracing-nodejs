@@ -59,6 +59,7 @@ describe("Span", () => {
 
     const s = tracer.startSpan('test-span')
     s.setTags(tags)
+    
     Object.entries(tags)
       .forEach(([tag, value]) => {
         expect(s._span._span._labels[tag]).to.equal(value)

@@ -5,6 +5,10 @@
       "declaration": true,
       "outDir": "./lib",
       "strict": true,
-      "esModuleInterop": true
-    }
+      "esModuleInterop": true,
+      "types": [
+        "elastic-apm-node",
+        "express"
+      ]
+    },
 }

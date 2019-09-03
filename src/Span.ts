@@ -1,4 +1,5 @@
 import { Tags } from 'opentracing'
+
 export interface LogPayload {
     event: string
     message: string
@@ -6,6 +7,12 @@ export interface LogPayload {
     'error.object': Error
     'error.kind'?: string
 }
+
+export type LabelValue = string | number | boolean | null | undefined;
+
+export interface Labels {
+    [key: string]: LabelValue;
+  }
 
 export default class Span {
 
@@ -83,7 +90,7 @@ export default class Span {
         this._span.setTag(tag, value)
     }
 
-    setTags(tags: object): void {
+    setTags(tags: Labels): void {
         Object.entries(tags).forEach(([tag, value]) => this.setTag(tag, value))
     }
 

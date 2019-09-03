@@ -3,14 +3,15 @@ import apm from 'elastic-apm-node'
 import OpenTracer from 'elastic-apm-node-opentracing'
 import Span from './Span'
 import { Response, Request, NextFunction } from 'express'
+import { LabelValue, Labels } from './Span'
 
 export class Tracer {
 
-  serviceName: string
+  serviceName: string | undefined
 
-  secretToken: string
+  secretToken: string | undefined
 
-  serverUrl: string
+  serverUrl: string | undefined
 
   _agent: any
 
@@ -22,7 +23,7 @@ export class Tracer {
     this.serviceName = config.serviceName
     this.secretToken = config.secretToken
     this.serverUrl = config.serverUrl
-    this._agent = apm.start(config)
+    this._agent = apm.start()
     this._tracer = new OpenTracer(this._agent)    
     this._exceptions = TracerExceptions
   }
@@ -130,7 +131,73 @@ export interface ITracerExceptions {
 }
 
 export interface TracerConfig {
-  serviceName: string
-  serverUrl: string
-  secretToken: string
+  abortedErrorThreshold?: string; // Also support `number`, but as we're removing this functionality soon, there's no need to advertise it
+  active?: boolean;
+  addPatch?: KeyValueConfig;
+  apiRequestSize?: string; // Also support `number`, but as we're removing this functionality soon, there's no need to advertise it
+  apiRequestTime?: string; // Also support `number`, but as we're removing this functionality soon, there's no need to advertise it
+  asyncHooks?: boolean;
+  captureBody?: CaptureBody;
+  captureErrorLogStackTraces?: CaptureErrorLogStackTraces;
+  captureExceptions?: boolean;
+  captureHeaders?: boolean;
+  captureSpanStackTraces?: boolean;
+  containerId?: string;
+  disableInstrumentations?: string | string[];
+  environment?: string;
+  errorMessageMaxLength?: string; // Also support `number`, but as we're removing this functionality soon, there's no need to advertise it
+  errorOnAbortedRequests?: boolean;
+  filterHttpHeaders?: boolean;
+  frameworkName?: string;
+  frameworkVersion?: string;
+  globalLabels?: KeyValueConfig;
+  hostname?: string;
+  ignoreUrls?: Array<string | RegExp>;
+  ignoreUserAgents?: Array<string | RegExp>;
+  instrument?: boolean;
+  kubernetesNamespace?: string;
+  kubernetesNodeName?: string;
+  kubernetesPodName?: string;
+  kubernetesPodUID?: string;
+  logLevel?: LogLevel;
+  logger?: Logger;
+  metricsInterval?: string; // Also support `number`, but as we're removing this functionality soon, there's no need to advertise it
+  payloadLogFile?: string;
+  centralConfig?: boolean;
+  secretToken?: string;
+  serverTimeout?: string; // Also support `number`, but as we're removing this functionality soon, there's no need to advertise it
+  serverUrl?: string;
+  serviceName?: string;
+  serviceVersion?: string;
+  sourceLinesErrorAppFrames?: number;
+  sourceLinesErrorLibraryFrames?: number;
+  sourceLinesSpanAppFrames?: number;
+  sourceLinesSpanLibraryFrames?: number;
+  stackTraceLimit?: number;
+  transactionMaxSpans?: number;
+  transactionSampleRate?: number;
+  usePathAsTransactionName?: boolean;
+  verifyServerCert?: boolean;
+}
+
+type CaptureBody = 'off' | 'errors' | 'transactions' | 'all';
+type CaptureErrorLogStackTraces = 'never' | 'messages' | 'always';
+type LogLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal';
+
+type KeyValueConfig = string | Labels | Array<Array<LabelValue>>
+
+interface Logger {
+  fatal (msg: string, ...args: any[]): void;
+  fatal (obj: {}, msg?: string, ...args: any[]): void;
+  error (msg: string, ...args: any[]): void;
+  error (obj: {}, msg?: string, ...args: any[]): void;
+  warn (msg: string, ...args: any[]): void;
+  warn (obj: {}, msg?: string, ...args: any[]): void;
+  info (msg: string, ...args: any[]): void;
+  info (obj: {}, msg?: string, ...args: any[]): void;
+  debug (msg: string, ...args: any[]): void;
+  debug (obj: {}, msg?: string, ...args: any[]): void;
+  trace (msg: string, ...args: any[]): void;
+  trace (obj: {}, msg?: string, ...args: any[]): void;
+  [propName: string]: any;
 }
