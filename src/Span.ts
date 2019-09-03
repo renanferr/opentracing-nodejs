@@ -53,7 +53,12 @@ export default class Span {
     }
 
     log(payload: LogPayload): void {
-        this._span.log(payload)
+        try {
+            this._span.log(payload)
+        } catch (e) {
+            console.log("Tá caindo aki")
+            console.log('eroaki', {eroaki: e})
+        }
     }
 
     logError(error: any, kind?: string): void {

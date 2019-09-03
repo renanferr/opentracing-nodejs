@@ -62,7 +62,10 @@ export class Tracer {
         span._handleThrownError(e)
         throw e
       }
-      span.finish()
+      
+      if (!span.isFinished()) {
+        span.finish()
+      }
       return fnReturn
     }
   }

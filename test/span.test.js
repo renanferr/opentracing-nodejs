@@ -1,4 +1,4 @@
-const { serviceName, serverUrl, secretToken, tracer } = require('./testTracerSingleton')
+const { serviceName, serverUrl, secretToken, tracer } = require('./util/singleton')
 const expect = require('chai').expect
 const { Span } = require('../lib')
 

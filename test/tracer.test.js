@@ -1,6 +1,6 @@
 const expect = require('chai').expect
-const { serviceName, serverUrl, secretToken, tracer } = require('../util/singleton')
-const { Tracer, TracerExceptions, Tags } = require('../../lib')
+const { serviceName, serverUrl, secretToken, tracer } = require('./util/singleton')
+const { Tracer, TracerExceptions, Tags } = require('../lib')
 
 describe("Tracer", () => {
   it("should have provided config", done => {

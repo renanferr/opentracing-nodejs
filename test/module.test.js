@@ -1,4 +1,4 @@
-const lib = require('../../lib')
+const lib = require('../lib')
 const expect = require('chai').expect
 
 describe('Module', () => {
