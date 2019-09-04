@@ -13,7 +13,7 @@
     "cover": "node_modules/.bin/nyc --silent npm test && npm run cover:report",
     "cover:report": "node_modules/.bin/nyc report --reporter=lcov --reporter=text",
     "ci": "npm run build && npm run cover",
-    "prepublishOnly": "npm run ci",
+    "prepublish": "npm run ci",
     "preversion": "npm run ci"
   },
   "publishConfig": {
