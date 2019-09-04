@@ -37,8 +37,8 @@ const { Tracer } = require('opentracing-nodejs')
 import { Tracer } from 'opentracing-nodejs'
 ```
 
-O módulo exporta a classe `Tracer` que implementa [as mesmas configurações do agente oficial do Elastic APM para Node.js.][elastic_agent_configs]
-[elastic_agent_configs]: https://www.elastic.co/guide/en/apm/agent/nodejs/master/configuration.html "as mesmas configurações do agente oficial do Elastic APM para Node.js."
+O módulo exporta a classe `Tracer` que implementa [as mesmas configurações do agente oficial do Elastic APM para Node.js.](https://www.elastic.co/guide/en/apm/agent/nodejs/master/configuration.html)
+
 
 ```javascript
 const { Tracer } = require('opentracing-nodejs')
