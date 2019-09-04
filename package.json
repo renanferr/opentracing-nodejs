@@ -15,7 +15,7 @@
     "ci": "npm run build && npm run cover",
     "prepublish": "npm run ci",
     "preversion": "npm run ci",
-    "release-to-npm": "release-to-npm"
+    "npm-publish": "npm-publish"
   },
   "publishConfig": {
     "registry": "https://nx3-cideveloper.ipp.openshift.locawebcorp.com.br/repository/npm-private/"
