@@ -23,7 +23,7 @@ export class Tracer {
     this.serviceName = config.serviceName
     this.secretToken = config.secretToken
     this.serverUrl = config.serverUrl
-    this._agent = apm.start()
+    this._agent = apm.start(config)
     this._tracer = new OpenTracer(this._agent)    
     this._exceptions = TracerExceptions
   }

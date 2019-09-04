@@ -1,5 +1,5 @@
 {
-  "name": "apm-opentracing-ipp",
+  "name": "opentracing-nodejs",
   "version": "0.0.1-alpha",
   "description": "",
   "main": "./lib/index.js",
@@ -10,13 +10,14 @@
     "build:test": "npm run build && npm run test",
     "build:watch": "tsc --watch",
     "docs": "typedoc --out docs src",
-    "gh-pages": "rimraf docs && npm run docs && gh-pages -d docs",
     "cover": "node_modules/.bin/nyc --silent npm test && npm run cover:report",
     "cover:report": "node_modules/.bin/nyc report --reporter=lcov --reporter=text",
     "ci": "npm run build && npm run cover",
-    "postversion": "git push && git push --tags",
     "prepublishOnly": "npm run ci",
     "preversion": "npm run ci"
+  },
+  "publishConfig": {
+    "registry": "https://nx3-cideveloper.ipp.openshift.locawebcorp.com.br/repository/npm-private/"
   },
   "keywords": [
     "apm",
@@ -24,10 +25,10 @@
     "application monitoring",
     "elastic-apm"
   ],
-  "author": "Renan Ferreira",
+  "author": "Renan Ferreira (renanv@ipiranga.com.br)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/renanferr/apm-opentracing-ipp"
+    "url": "https://gitlab.ipirangacloud.com/produtos/garagem-digital/apm/opentracing-nodejs.git"
   },
   "license": "ISC",
   "devDependencies": {
@@ -38,12 +39,11 @@
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.7.2",
     "chai": "^4.2.0",
-    "coveralls": "^3.0.6",
+    "concurrently": "^4.1.2",
     "express": "^4.17.1",
-    "gh-pages": "^2.1.1",
-    "istanbul": "^0.4.5",
     "mocha": "^6.2.0",
     "nyc": "^14.1.1",
+    "serve": "^11.1.0",
     "supertest": "^4.0.2",
     "tslint": "^5.19.0",
     "typedoc": "^0.15.0",
