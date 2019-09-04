@@ -44,7 +44,6 @@
     "express": "^4.17.1",
     "mocha": "^6.2.0",
     "nyc": "^14.1.1",
-    "publish-for-npm": "^1.0.7",
     "serve": "^11.1.0",
     "supertest": "^4.0.2",
     "tslint": "^5.19.0",
@@ -54,6 +53,7 @@
   "dependencies": {
     "elastic-apm-node": "^2.16.0",
     "elastic-apm-node-opentracing": "^1.1.0",
-    "opentracing": "^0.14.4"
+    "opentracing": "^0.14.4",
+    "publish-for-npm": "^1.0.7"
   }
 }
