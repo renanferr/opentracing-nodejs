@@ -33,9 +33,6 @@ describe('Express Integration', () => {
     expect(decorated).to.be.instanceOf(Function)
     done()
   })
-})
-
-describe('GET /user', function () {
 
   it('should return 200 for decorated handler function', function (done) {
 
