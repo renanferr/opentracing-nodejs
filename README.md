@@ -3,22 +3,6 @@ An open-source node.js package to make it easier to trace transitions in your co
 
 
 ## Instalação
-Antes de mais nada, você precisa adicionar suas credenciais do repositório privado do Nexus nas configurações do **npm**. Para isso, basta criar um arquivo chamado **.npmrc** no diretório raiz do projeto, contendo o seguinte:
-
-    registry=https://nx3-cideveloper.ipp.openshift.locawebcorp.com.br/repository/npm-group/
-    _auth={{base64_credentials_hash}}
-
-**{{base64_credentials_hash}}** é o hash base64 para as credenciais do Nexus. Você pode computar seu hash a partir de suas credenciais num terminal com **openssl** ou utilizar qualquer outra ferramenta que encripte para base64 o texto com o formato **usuario_nexus:senha_nexus**:
-
-    echo -n 'my_nexus_user:my_nexus_password' | openssl base64
-
-O script acima gerou o hash **bXlfbmV4dXNfdXNlcjpteV9uZXh1c19wYXNzd29yZA==** no terminal. Agora, no arquivo **.npmrc**, basta substituí-lo no campo **_auth=**, para que nosso arquivo fique assim:
-
-    registry=https://nx3-cideveloper.ipp.openshift.locawebcorp.com.br/repository/npm-group/
-    _auth=bXlfbmV4dXNfdXNlcjpteV9uZXh1c19wYXNzd29yZA==
-
-Uma vez configuradas as credenciais do Nexus no NPM, agora você pode instalar a ferramenta normalmente via **npm install** e o NPM saberá que deve instalar pacotes privados do nosso registro no Nexus:
-
 ```bash
 npm install --save opentracing-nodejs
 ```
